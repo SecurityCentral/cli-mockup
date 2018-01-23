@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015  FreeIPA Contributors see COPYING for license
+# Copyright (C) 2018 SecurityCentral Contributors see LICENSE for license
 #
 
 '''
