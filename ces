@@ -1,0 +1,52 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2018 SecurityCentral Contributors see COPYING for license
+#
+
+import time
+import argparse
+import sys
+from securitycentralplatform.paths import paths
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Manage the security of your systems.")
+    sub_parser = parser.add_subparsers(help="Security Documentation")
+    ssp_parser = sub_parser.add_parser("ssp", help="Generate SSP content")
+    ssp_parser.add_argument("--build", action="store_true",
+                              help="Merges OpenControl content together to create an SSP")
+    scan_parser = sub_parser.add_parser("scan", help="Scan systems for compliance")
+    scan_parser.add_argument("--xccdf", action="store_true",
+                              help="Use SCAP XCCDF format")
+    scan_parser.add_argument("--ds", action="store_true",
+                              help="Use SCAP Datastream format")
+    scan_parser.add_argument("--profile", action="store", required=True,
+                              help="Compliance profile to scan against")
+    scan_parser.add_argument("--scan_file", action="store",
+                              default=None, required=False,
+                              help="Custom or tailored SCAP format file")
+    scan_parser.set_defaults(
+
+    args, unknown = parser.parse_known_args()
+    if unknown:
+        sys.stderr.write(
+            "Unknown arguments " + ",".join(unknown) + ".\n"
+        )
+        sys.exit(1)
+
+    if len(sys.argv) < 3:
+        parser.error(parser.print_help())
+
+    if args.xccdf:
+        scap_format = paths.SSG_DIR + "ssg-rhel7-xccdf.xml"
+    if args.ds:
+        scap_format = paths.SSG_DIR + "ssg-rhel7-ds.xml"
+
+    if args.build:
+        print("Generating SSP...")
+        time.sleep(1)
+        print("Complete")
+
+if __name__ == "__main__":
+    main()
+
